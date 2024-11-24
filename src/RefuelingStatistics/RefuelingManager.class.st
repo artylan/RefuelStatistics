@@ -20,22 +20,30 @@ RefuelingManager class >> readCsv [
 
 ]
 
+{ #category : 'visualization' }
+RefuelingManager >> createYearsChart [
+    | c p x y size |
+    x := (self getYearsEurosSeries collect: [ :elem | elem first ]) reverse.
+    y := (self getYearsEurosSeries collect: [ :elem | elem at: 2 ]) reverse.
+    c := RSCompositeChart new.
+    p := RSHorizontalBarPlot new x: y y: x.
+    size := 15.
+    p barSize: size.
+    p barOffset: 0 - 1.
+    c add: p.
+    c build.
+    p bars @ RSPopup.
+    ^ c canvas
+
+]
+
 { #category : 'initialization' }
 RefuelingManager >> dump [
 
 	refuelings do: [:each | Transcript show: each printString; cr ].
 ]
 
-{ #category : 'as yet unclassified' }
-RefuelingManager >> dumpYearsEuros [
-
-	self getYears do: [:each | Transcript show: each printString,
-		 ': ',
-		 (self format: ((self getSumEurosPerYear: each) roundTo: 0.01) printString fill: '          '),
-		Character cr asString].
-]
-
-{ #category : 'initialization' }
+{ #category : 'utils' }
 RefuelingManager >> format: str fill: fill [
 
 	| len |
@@ -43,7 +51,7 @@ RefuelingManager >> format: str fill: fill [
 	^ (fill copyFrom: 1 to: len) , str
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 RefuelingManager >> getSumEurosPerYear: yearIn [
 
 	| sum |
@@ -52,7 +60,7 @@ RefuelingManager >> getSumEurosPerYear: yearIn [
 	^ sum
 ]
 
-{ #category : 'initialization' }
+{ #category : 'accessing' }
 RefuelingManager >> getYears [
 
 	| years year_ |
@@ -61,6 +69,13 @@ RefuelingManager >> getYears [
 		year_ := each getDate year. 
 		(years includes: year_) ifFalse: [ years add: year_ ]].
 	^ years
+]
+
+{ #category : 'accessing' }
+RefuelingManager >> getYearsEurosSeries [
+
+    ^ self getYears collect: [:year | Array with: year with: ((self getSumEurosPerYear: year) roundTo: 0.01)].
+
 ]
 
 { #category : 'initialization' }
