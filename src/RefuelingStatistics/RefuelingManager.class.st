@@ -40,7 +40,7 @@ RefuelingManager >> createYearsChart [
 { #category : 'initialization' }
 RefuelingManager >> dump [
 
-	refuelings do: [:each | Transcript show: each printString; cr ].
+	refuelings do: [:each | Transcript show: each printString; cr ]
 ]
 
 { #category : 'utils' }
@@ -74,7 +74,7 @@ RefuelingManager >> getYears [
 { #category : 'accessing' }
 RefuelingManager >> getYearsEurosSeries [
 
-    ^ self getYears collect: [:year | Array with: year with: ((self getSumEurosPerYear: year) roundTo: 0.01)].
+    ^ self getYears collect: [:year | Array with: year with: ((self getSumEurosPerYear: year) roundTo: 0.01)]
 
 ]
 
@@ -83,6 +83,6 @@ RefuelingManager >> readCsv [
 
 	| lines |
 	lines := (FileSystem workingDirectory / 'Opel Adam - OF-AW 150.txt') readStream contents lines.
-	refuelings := lines collect: [ :line | RefuelingData fromCsvLine: line ].
+	refuelings := lines collect: [ :line | RefuelingData fromCsvLine: line ]
 
 ]
